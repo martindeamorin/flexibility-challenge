@@ -5,8 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface ProductJpaRepository extends CrudRepository<ProductEntity, Integer> {
-    Optional<ProductEntity> findById(Long id);
-
-    void deleteById(Long id);
+public interface ProductJpaRepository extends CrudRepository<ProductEntity, Long> {
 }

@@ -1,39 +1,38 @@
 package ar.com.plug.examen.application.controller;
 
-import ar.com.plug.examen.application.dto.ProductDto;
-import ar.com.plug.examen.domain.service.ProductService;
-import static ar.com.plug.examen.global.mapper.ProductMapper.MAPPER;
+import ar.com.plug.examen.application.dto.CustomerDto;
+import ar.com.plug.examen.domain.service.CustomerService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static ar.com.plug.examen.global.mapper.CustomerMapper.MAPPER;
+
 @RestController
 @RequestMapping(
-        path = "/product",
+        path = "/customer",
         produces = {MediaType.APPLICATION_JSON_VALUE },
         consumes = {MediaType.APPLICATION_JSON_VALUE }
 )
 @RequiredArgsConstructor
-@Slf4j
-public class ProductController {
-    private final ProductService service;
+public class CustomerController {
+    private final CustomerService service;
     @GetMapping("/{id}")
-    ResponseEntity<ProductDto> find(@PathVariable Long id) {
+    ResponseEntity<CustomerDto> find(@PathVariable Long id) {
         return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(MAPPER.toDto(
-                            service.find(id)
-                    )
-        );
+                .status(HttpStatus.CREATED)
+                .body(MAPPER.toDto(
+                                service.find(id)
+                        )
+                );
     }
 
     @PostMapping
-    ResponseEntity<Void> create(@RequestBody ProductDto productDto) {
+    ResponseEntity<Void> create(@RequestBody CustomerDto customerDto) {
         service.create(
-                MAPPER.toDomain(productDto)
+                MAPPER.toDomain(customerDto)
         );
 
         return ResponseEntity
@@ -51,15 +50,14 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Void> update(@PathVariable Long id, @RequestBody ProductDto productDto){
+    ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CustomerDto customerDto){
         service.update(
                 id,
-                MAPPER.toDomain(productDto)
+                MAPPER.toDomain(customerDto)
         );
 
         return  ResponseEntity
                 .ok()
                 .build();
     }
-
 }

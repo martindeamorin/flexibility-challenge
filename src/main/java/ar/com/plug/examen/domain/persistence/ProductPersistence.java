@@ -8,4 +8,8 @@ public interface ProductPersistence {
     void create(Product product);
 
     void delete(Long id);
+
+    void update(Long id, Product product);
+
+    boolean exists(Long id);
 }

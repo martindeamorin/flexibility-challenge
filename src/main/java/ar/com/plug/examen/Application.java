@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan("ar.com.plug.examen.*")
 public class Application {
-
     public static void main(final String[] args)
     {
         SpringApplication.run(Application.class, args);
