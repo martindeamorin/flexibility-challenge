@@ -10,6 +10,4 @@ public interface ProductPersistence {
     void delete(Long id);
 
     void update(Long id, Product product);
-
-    boolean exists(Long id);
 }

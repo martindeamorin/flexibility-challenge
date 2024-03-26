@@ -37,7 +37,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<PaymentExceptionDto> handleFallback(Exception exception) {
-        log.info(exception.getMessage());
+        log.info(exception.getClass().toString());
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 
         return ResponseEntity

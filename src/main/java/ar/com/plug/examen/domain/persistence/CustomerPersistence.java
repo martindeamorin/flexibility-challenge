@@ -10,6 +10,4 @@ public interface CustomerPersistence {
     void delete(Long id);
 
     void update(Long id, Customer customer);
-
-    boolean exists(Long id);
 }

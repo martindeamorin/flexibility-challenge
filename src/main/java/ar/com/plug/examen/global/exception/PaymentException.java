@@ -14,6 +14,11 @@ public enum PaymentException {
             "The customer couldn't be found.",
             HttpStatus.NOT_FOUND.toString(),
             HttpStatus.NOT_FOUND.value()
+    ),
+    SELLER_NOT_FOUND(
+            "The seller couldn't be found.",
+            HttpStatus.NOT_FOUND.toString(),
+            HttpStatus.NOT_FOUND.value()
     );
 
     private final String message;

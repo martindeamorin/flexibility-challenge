@@ -4,9 +4,9 @@ import ar.com.plug.examen.domain.model.Customer;
 import ar.com.plug.examen.domain.persistence.CustomerPersistence;
 import ar.com.plug.examen.global.exception.PaymentRestException;
 import ar.com.plug.examen.infrastructure.entity.CustomerEntity;
-import ar.com.plug.examen.infrastructure.entity.ProductEntity;
 import ar.com.plug.examen.infrastructure.persistence.jpa.CustomerJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import static ar.com.plug.examen.global.exception.PaymentException.CUSTOMER_NOT_FOUND;
@@ -29,18 +29,18 @@ public class CustomerPersistenceImpl implements CustomerPersistence {
 
     @Override
     public void delete(Long id) {
-        customerJpaRepository.deleteById(id);
+        try {
+            customerJpaRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ignored){};
     }
 
     @Override
     public void update(Long id, Customer updated) {
-        CustomerEntity old = customerJpaRepository.findById(id).get();
+        CustomerEntity old = customerJpaRepository
+                .findById(id)
+                .orElseThrow(() -> new PaymentRestException(CUSTOMER_NOT_FOUND));
         MAPPER.toUpdatedEntity(updated, old);
         customerJpaRepository.save(old);
     }
 
-    @Override
-    public boolean exists(Long id) {
-        return customerJpaRepository.existsById(id);
-    }
 }

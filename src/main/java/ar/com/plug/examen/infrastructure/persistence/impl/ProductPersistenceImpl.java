@@ -7,7 +7,7 @@ import ar.com.plug.examen.global.exception.PaymentRestException;
 import ar.com.plug.examen.infrastructure.entity.ProductEntity;
 import ar.com.plug.examen.infrastructure.persistence.jpa.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.mapping.Map;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import static ar.com.plug.examen.global.exception.PaymentException.PRODUCT_NOT_FOUND;
@@ -30,18 +30,17 @@ public class ProductPersistenceImpl implements ProductPersistence {
 
     @Override
     public void delete(Long id) {
-        productJpaRepository.deleteById(id);
+        try {
+            productJpaRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ignored) {};
     }
 
     @Override
     public void update(Long id, Product updated) {
-        ProductEntity old = productJpaRepository.findById(id).get();
+        ProductEntity old = productJpaRepository
+                .findById(id)
+                .orElseThrow(() -> new PaymentRestException(PRODUCT_NOT_FOUND));
         MAPPER.toUpdatedEntity(updated, old);
         productJpaRepository.save(old);
-    }
-
-    @Override
-    public boolean exists(Long id) {
-        return productJpaRepository.existsById(id);
     }
 }
