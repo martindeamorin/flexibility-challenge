@@ -1,9 +1,9 @@
 package ar.com.plug.examen.application.controller;
 
-import ar.com.plug.examen.application.dto.in.CreateSellerDto;
-import ar.com.plug.examen.application.dto.in.UpdateSellerDto;
-import ar.com.plug.examen.application.dto.out.FindSellerDto;
-import ar.com.plug.examen.domain.service.SellerService;
+
+import ar.com.plug.examen.application.dto.in.CreateOrderDto;
+import ar.com.plug.examen.application.dto.out.FindOrderDto;
+import ar.com.plug.examen.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,32 +13,31 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static ar.com.plug.examen.global.mapper.SellerMapper.MAPPER;
+import static ar.com.plug.examen.global.mapper.OrderMapper.MAPPER;
 
 @RestController
 @RequestMapping(
-        path = "/seller",
+        path = "/order",
         produces = {MediaType.APPLICATION_JSON_VALUE },
         consumes = {MediaType.APPLICATION_JSON_VALUE }
 )
 @RequiredArgsConstructor
 @Slf4j
-public class SellerController {
-    private final SellerService service;
+public class OrderController {
+    private final OrderService service;
+
     @GetMapping("/{id}")
-    ResponseEntity<FindSellerDto> find(@PathVariable Long id) {
+    ResponseEntity<FindOrderDto> find(@PathVariable Long id) {
+        FindOrderDto f = MAPPER.toDto(service.find(id));
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(MAPPER.toDto(
-                                service.find(id)
-                        )
-                );
+                .body(f);
     }
 
     @PostMapping
-    ResponseEntity<Void> create( @Valid @RequestBody CreateSellerDto sellerDto) {
+    ResponseEntity<Void> create(@Valid @RequestBody CreateOrderDto orderDto) {
         service.create(
-                MAPPER.toDomain(sellerDto)
+                MAPPER.toDomain(orderDto)
         );
 
         return ResponseEntity
@@ -55,16 +54,12 @@ public class SellerController {
                 .build();
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody UpdateSellerDto sellerDto){
-        service.update(
-                id,
-                MAPPER.toDomain(sellerDto)
-        );
+    @PatchMapping("/authorize/{id}")
+    ResponseEntity<Void> authorize(@PathVariable Long id) {
+        service.authorize(id);
 
-        return  ResponseEntity
+        return ResponseEntity
                 .ok()
                 .build();
     }
-
 }

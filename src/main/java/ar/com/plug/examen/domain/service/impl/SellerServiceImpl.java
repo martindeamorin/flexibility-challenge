@@ -34,4 +34,9 @@ public class SellerServiceImpl implements SellerService {
         sellerPersistence.update(id, seller);
 
     }
+
+    @Override
+    public void exists(Long id) {
+        sellerPersistence.exists(id);
+    }
 }

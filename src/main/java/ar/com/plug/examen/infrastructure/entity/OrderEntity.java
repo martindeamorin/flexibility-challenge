@@ -7,21 +7,35 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "purchase_order")
 @Data
-@SQLDelete(sql = "UPDATE customer SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE purchase_order SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
-public class CustomerEntity {
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String lastName;
-    private String email;
-    private Integer age;
+    @OneToMany(
+            targetEntity = ProductSnapshotEntity.class,
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    List<ProductSnapshotEntity> products;
+    @ManyToOne(
+            targetEntity = CustomerEntity.class,
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(referencedColumnName = "id")
+    private CustomerEntity customer;
+    private BigDecimal total;
+    @Column(name = "authorized")
+    private Boolean isAuthorized;
     @Column(
             name = "deleted",
             nullable = false,

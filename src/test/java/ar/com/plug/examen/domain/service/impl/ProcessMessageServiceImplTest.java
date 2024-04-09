@@ -1,7 +1,6 @@
-package ar.com.plug.examen.domain.service;
+package ar.com.plug.examen.domain.service.impl;
 
 import ar.com.plug.examen.domain.model.Message;
-import ar.com.plug.examen.domain.service.impl.ProcessMessageServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -10,7 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProcessMessageServiceTest {
+public class ProcessMessageServiceImplTest {
 
     @InjectMocks
     private ProcessMessageServiceImpl messageService;

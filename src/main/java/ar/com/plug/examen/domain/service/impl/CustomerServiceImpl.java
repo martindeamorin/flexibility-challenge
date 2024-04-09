@@ -3,10 +3,7 @@ package ar.com.plug.examen.domain.service.impl;
 import ar.com.plug.examen.domain.model.Customer;
 import ar.com.plug.examen.domain.persistence.CustomerPersistence;
 import ar.com.plug.examen.domain.service.CustomerService;
-import ar.com.plug.examen.global.exception.PaymentException;
-import ar.com.plug.examen.global.exception.PaymentRestException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,5 +29,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void update(Long id, Customer customer) {
         customerPersistence.update(id, customer);
+    }
+
+    @Override
+    public void exists(Long id) {
+        customerPersistence.exists(id);
     }
 }

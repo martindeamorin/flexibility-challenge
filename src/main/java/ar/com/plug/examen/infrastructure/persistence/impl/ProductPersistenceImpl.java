@@ -10,6 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
+import static ar.com.plug.examen.global.exception.PaymentException.PRODUCTS_NOT_FOUND;
 import static ar.com.plug.examen.global.exception.PaymentException.PRODUCT_NOT_FOUND;
 import static ar.com.plug.examen.global.mapper.ProductMapper.MAPPER;
 
@@ -24,6 +28,13 @@ public class ProductPersistenceImpl implements ProductPersistence {
     }
 
     @Override
+    public List<Product> findAll(List<Long> ids) {
+        List<ProductEntity> products = productJpaRepository.findAllByIdIn(ids);
+        failIfProductsNotFound(ids, products);
+        return MAPPER.toDomain(products);
+    }
+
+    @Override
     public void create(Product product) {
         productJpaRepository.save(MAPPER.toEntity(product));
     }
@@ -32,15 +43,20 @@ public class ProductPersistenceImpl implements ProductPersistence {
     public void delete(Long id) {
         try {
             productJpaRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException ignored) {};
+        } catch (EmptyResultDataAccessException ignored) {}
     }
-
     @Override
     public void update(Long id, Product updated) {
-        ProductEntity old = productJpaRepository
+        ProductEntity toUpdate = productJpaRepository
                 .findById(id)
                 .orElseThrow(() -> new PaymentRestException(PRODUCT_NOT_FOUND));
-        MAPPER.toUpdatedEntity(updated, old);
-        productJpaRepository.save(old);
+        MAPPER.toUpdatedEntity(toUpdate, updated);
+        productJpaRepository.save(toUpdate);
+    }
+
+    private void failIfProductsNotFound(List<Long> ids, List<ProductEntity> products) {
+        if(products == null || products.isEmpty() || (products.size() != ids.size())) {
+            throw new PaymentRestException(PRODUCTS_NOT_FOUND);
+        }
     }
 }

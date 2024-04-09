@@ -10,4 +10,6 @@ public interface CustomerService {
     void delete(Long id);
 
     void update(Long id, Customer customer);
+
+    void exists(Long id);
 }

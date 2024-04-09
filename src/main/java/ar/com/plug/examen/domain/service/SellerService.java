@@ -10,4 +10,6 @@ public interface SellerService {
     void delete(Long id);
 
     void update(Long id, Seller seller);
+
+    void exists(Long id);
 }

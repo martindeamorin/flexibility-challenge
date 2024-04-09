@@ -11,4 +11,6 @@ public interface SellerPersistence {
 
     void update(Long id, Seller seller);
 
+    void exists(Long id);
+
 }

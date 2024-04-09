@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
+import static ar.com.plug.examen.global.exception.PaymentException.CUSTOMER_NOT_FOUND;
 import static ar.com.plug.examen.global.exception.PaymentException.SELLER_NOT_FOUND;
 import static ar.com.plug.examen.global.mapper.SellerMapper.MAPPER;
 
@@ -43,4 +44,10 @@ public class SellerPersistenceImpl implements SellerPersistence {
         sellerJpaRepository.save(old);
     }
 
+    @Override
+    public void exists(Long id) {
+        if(!sellerJpaRepository.existsById(id)){
+            throw new PaymentRestException(SELLER_NOT_FOUND);
+        }
+    }
 }

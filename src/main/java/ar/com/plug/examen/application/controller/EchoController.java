@@ -1,6 +1,6 @@
 package ar.com.plug.examen.application.controller;
 
-import ar.com.plug.examen.application.dto.MessageDto;
+import ar.com.plug.examen.application.dto.out.MessageDto;
 import ar.com.plug.examen.domain.service.ProcessMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

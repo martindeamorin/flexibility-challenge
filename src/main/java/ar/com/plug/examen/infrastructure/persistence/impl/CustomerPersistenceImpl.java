@@ -31,7 +31,7 @@ public class CustomerPersistenceImpl implements CustomerPersistence {
     public void delete(Long id) {
         try {
             customerJpaRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException ignored){};
+        } catch (EmptyResultDataAccessException ignored){}
     }
 
     @Override
@@ -41,6 +41,13 @@ public class CustomerPersistenceImpl implements CustomerPersistence {
                 .orElseThrow(() -> new PaymentRestException(CUSTOMER_NOT_FOUND));
         MAPPER.toUpdatedEntity(updated, old);
         customerJpaRepository.save(old);
+    }
+
+    @Override
+    public void exists(Long id) {
+        if(!customerJpaRepository.existsById(id)){
+            throw new PaymentRestException(CUSTOMER_NOT_FOUND);
+        }
     }
 
 }

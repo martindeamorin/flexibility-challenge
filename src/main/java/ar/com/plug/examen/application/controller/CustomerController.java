@@ -1,12 +1,16 @@
 package ar.com.plug.examen.application.controller;
 
-import ar.com.plug.examen.application.dto.CustomerDto;
+import ar.com.plug.examen.application.dto.in.CreateCustomerDto;
+import ar.com.plug.examen.application.dto.in.UpdateCustomerDto;
+import ar.com.plug.examen.application.dto.out.FindCustomerDto;
 import ar.com.plug.examen.domain.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import static ar.com.plug.examen.global.mapper.CustomerMapper.MAPPER;
 
@@ -20,7 +24,7 @@ import static ar.com.plug.examen.global.mapper.CustomerMapper.MAPPER;
 public class CustomerController {
     private final CustomerService service;
     @GetMapping("/{id}")
-    ResponseEntity<CustomerDto> find(@PathVariable Long id) {
+    ResponseEntity<FindCustomerDto> find(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(MAPPER.toDto(
@@ -30,7 +34,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    ResponseEntity<Void> create(@RequestBody CustomerDto customerDto) {
+    ResponseEntity<Void> create(@Valid @RequestBody CreateCustomerDto customerDto) {
         service.create(
                 MAPPER.toDomain(customerDto)
         );
@@ -50,7 +54,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CustomerDto customerDto){
+    ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody UpdateCustomerDto customerDto){
         service.update(
                 id,
                 MAPPER.toDomain(customerDto)
